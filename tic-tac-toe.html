@@ -1,0 +1,224 @@
+<html>
+<head>
+ <title>
+  TIC TAC TOE
+ </title>
+    <style>
+        h1{color:red;}
+        table,tr,th{
+		center;
+        border: 20px black;
+         height: 150px;
+        width: 350px;
+		cellpadding:30px;
+		cellspacing: 30px;
+		text-align:center;
+		font-size : 40px;
+		border-collapse:separate;
+		margin:25px;
+		
+    background-color:#996600;
+	}
+	button {
+    background-color:#ff9900;
+    border: none;
+    color: white;
+    padding: 33px 33px;
+	cellspacing: 10px;
+    text-align: center;
+    text-decoration: none;
+	 display: inline-block;
+    display: inline-block;
+    font-size: 16px;
+    margin:10px 10px;
+    cursor: pointer;
+	button-size:40px;
+}
+</style>
+
+<script>
+var i=0;
+var index=0;
+var arr=[[0,0,0],[0,0,0],[0,0,0]];
+var temp=[[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"]];
+var tempx='1';
+function InitializeArray()
+{
+arr=[[0,0,0],[0,0,0],[0,0,0]];
+var temp=[[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"],[0,0,"i","p"]];
+}
+function undo()
+{
+tempx=temp[index-1][2];
+document.getElementById(tempx).innerHTML='';
+arr[temp[index-1][0]][temp[index-1][1]]=0;
+index--;
+i--;
+
+}
+function redo()
+{
+tempx=temp[index][2];
+document.getElementById(tempx).innerHTML=temp[index][3];
+if(temp[index][3]=='X')
+arr[temp[index][0]][temp[index][1]]=1;
+else
+arr[temp[index][0]][temp[index][1]]=1;
+index++;
+i++;
+
+}
+function checkRow(row)
+{
+var k=0
+for(k=0;k<2;k++)
+{
+if(arr[row][k]!=arr[row][k+1] || arr[row][k]==0)
+{
+return 0;
+}
+}
+if(arr[row][0]==1)
+window.alert("X won!!");
+else
+window.alert("O won!!");
+InitializeArray();
+location.reload();
+return 1;
+}
+function checkCol(col)
+{
+var k=0
+for(k=0;k<2;k++)
+{
+if(arr[k][col]!=arr[k+1][col] || arr[k][col]==0)
+{
+return 0;
+}
+}
+if(arr[0][col]==1)
+window.alert("X won!!");
+else
+window.alert("O won!!");
+location.reload();
+InitializeArray();
+return 1;
+}
+function checkUpperDiagnol()
+{
+var k=0
+for(k=0;k<2;k++)
+{
+if(arr[k][k]!=arr[k+1][k+1]|| arr[0][0]!=0)
+{
+return 0;
+}
+}
+if(arr[0][0]==1)
+window.alert("X won!!");
+else
+window.alert("O won!!");
+InitializeArray();
+location.reload();
+return 1;
+}
+function checkLowerDiagnol()
+{
+var k=0
+for(k=2;k>0;k--)
+{
+if(arr[k][k]!=arr[k-1][k-1] || arr[0][0]==0)
+{
+return 0;
+}
+}
+if(arr[0][0]==1)
+window.alert("X won!!");
+else
+window.alert("O won!!");
+InitializeArray();
+location.reload();
+return 1;;
+}
+function play(row,cl,id)
+{
+if(arr[row][cl]!=0)
+{
+window.alert("Invalid move try again!!!");
+return ;
+}
+if(i%2==0)
+{
+document.getElementById(id).innerHTML='X';
+arr[row][cl]=1;
+temp[index][0]=row;
+temp[index][1]=cl;
+temp[index][2]=id;
+temp[index][3]='X';
+index++;
+}
+else
+{
+document.getElementById(id).innerHTML='0';
+temp[index][0]=row;
+temp[index][1]=cl;
+temp[index][2]=id;
+temp[index][3]='O';
+arr[row][cl]=2;
+index++;
+}
+var op=0;
+var p=0;
+var q=0;
+i++;
+if(i>4)
+{
+op=checkRow(row);
+
+if(checkRow(row))
+return;
+if(checkCol(cl))
+return;
+if(checkLowerDiagnol())
+return;
+if(checkUpperDiagnol())
+return;
+}
+if(i==9)
+{
+window.alert("nobody won!!");
+location.reload();
+return;
+}
+
+}
+</script>
+</head>
+<body>
+<center>
+<h1> TIC TAC TOE</h1>
+<form name="tictactoe">
+<table>
+    <tr>
+        <td><button type="button" id="1" onclick="play(0,0,id)"> </button> </td>
+        <td><button type="button" id="2" onclick="play(0,1,id)"> </button> </td>
+        <td><button type="button" id="3" onclick="play(0,2,id)"> </button> </td>
+    </tr>
+    <tr>
+        <td><button type="button" id="4"onclick="play(1,0,id)"> </button> </td>
+        <td><button type="button" id="5"onclick="play(1,1,id)"> </button> </td>
+        <td><button type="button" id="6"onclick="play(1,2,id)"> </button> </td>
+    </tr>
+    <tr>
+        <td><button type="button" id="7"onclick="play(2,0,id)"> </button> </td>
+        <td><button type="button" id="8"onclick="play(2,1,id)"> </button> </td>
+        <td><button type="button" id="9"onclick="play(2,2,id)"> </button> </td>
+    </tr>
+</table>
+<button type="button" onclick="undo()">undo</button>
+<button type="button" onclick="redo()">redo</button>
+</form>
+</body>
+</html>
+
+
